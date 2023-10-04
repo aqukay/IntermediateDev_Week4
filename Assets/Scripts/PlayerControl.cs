@@ -45,6 +45,11 @@ public class PlayerControl : MonoBehaviour
             myAnim.SetBool("jumping", true);
             jump = true;
         }
+        if (Input.GetButtonDown("Jump") && !grounded)
+        {
+            myAnim.SetBool("jumping", true);
+            doubleJump = true;
+        }
 
         //running animation
         if(horizontalMove > 0.2f)
@@ -78,7 +83,7 @@ public class PlayerControl : MonoBehaviour
         }
         else if (doubleJump)
         {
-            myBody.velocity = new Vector2(myBody.velocity.x, jumpPower);
+            myBody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
 
             doubleJump = false;
         }
