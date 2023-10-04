@@ -27,7 +27,7 @@ public class playerCollision : MonoBehaviour
 
         if (collision.gameObject.name == "Final Door")
         {
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("Win");
         }
     }
 }
