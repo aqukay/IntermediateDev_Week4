@@ -22,12 +22,12 @@ public class playerCollision : MonoBehaviour
         //trigger dialogue box
         if (collision.gameObject.name == "Door")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene("LevelTwo");
         }
 
         if (collision.gameObject.name == "Final Door")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene("Main");
         }
     }
 }
