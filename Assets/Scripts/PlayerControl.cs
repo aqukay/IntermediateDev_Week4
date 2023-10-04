@@ -21,16 +21,18 @@ public class PlayerControl : MonoBehaviour
     public float gravityFall = 15f;
 
     bool jump = false;
-    bool doubleJump;
+    private bool doubleJump;
 
     //animation
     Animator myAnim;
+    SpriteRenderer myRend;
 
     // Start is called before the first frame update
     void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
+        myRend = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -42,14 +44,21 @@ public class PlayerControl : MonoBehaviour
         {
             myAnim.SetBool("jumping", true);
             jump = true;
-            doubleJump = true;
         }
 
         //running animation
-        if(horizontalMove > 0.2f || horizontalMove < -0.2f)
+        if(horizontalMove > 0.2f)
         {
             myAnim.SetBool("running", true);
+            myRend.flipX = false;
         }
+
+        else if(horizontalMove < -0.2f)
+        {
+            myAnim.SetBool("running", true);
+            myRend.flipX = true;
+        }
+
         else
         {
             myAnim.SetBool("running", false);
@@ -60,13 +69,18 @@ public class PlayerControl : MonoBehaviour
     {
         float moveSpeed = horizontalMove * speed;
 
-        if(jump || doubleJump)
+        if(jump)
         {
             myBody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
 
-            doubleJump = !doubleJump;
-
+            doubleJump = true;
             jump = false;
+        }
+        else if (doubleJump)
+        {
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpPower);
+
+            doubleJump = false;
         }
 
         if(myBody.velocity.y > 0)
@@ -78,6 +92,7 @@ public class PlayerControl : MonoBehaviour
             myBody.gravityScale = gravityFall;
         }
 
+        //raycast check if on ground
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, castDist);
         Debug.DrawRay(transform.position, Vector2.down * castDist, Color.red);
 
