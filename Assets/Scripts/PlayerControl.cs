@@ -6,7 +6,7 @@ public class PlayerControl : MonoBehaviour
 {
     //movement variables
     float horizontalMove;
-    public float speed = 2f;
+    public float speed = 20f;
 
     Rigidbody2D myBody;
 
@@ -16,11 +16,12 @@ public class PlayerControl : MonoBehaviour
     public float castDist = 1f;
     
     //jump physics
-    public float jumpPower = 2f;
-    public float gravityScale = 5f;
-    public float gravityFall = 40f;
+    public float jumpPower = 30f;
+    public float gravityScale = 1f;
+    public float gravityFall = 15f;
 
     bool jump = false;
+    bool doubleJump;
 
     //animation
     Animator myAnim;
@@ -41,8 +42,10 @@ public class PlayerControl : MonoBehaviour
         {
             myAnim.SetBool("jumping", true);
             jump = true;
+            doubleJump = true;
         }
 
+        //running animation
         if(horizontalMove > 0.2f || horizontalMove < -0.2f)
         {
             myAnim.SetBool("running", true);
@@ -57,9 +60,12 @@ public class PlayerControl : MonoBehaviour
     {
         float moveSpeed = horizontalMove * speed;
 
-        if(jump)
+        if(jump || doubleJump)
         {
             myBody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+
+            doubleJump = !doubleJump;
+
             jump = false;
         }
 
